@@ -62,14 +62,7 @@ board.on('ready', function() {
   });
   var motor = new five.Motor({pins: {pwm: 'A0', dir: 'D1', cdir: 'D0'}});
 
-
   rudder.center();
-
-  this.repl.inject({
-    l: function() {
-      led.toggle();
-    }
-  });
 
   function pad(charCode) {
     var charCodeStr = '' + charCode;
