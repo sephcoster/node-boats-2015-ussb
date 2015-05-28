@@ -44,7 +44,7 @@ var RUDDER_ART = {
   ]
 };
 var rudderDirection = 0;
-var enginePower = false;
+var enginePower = 'off';
 
 var board = new five.Board({
   io: new Spark({
@@ -57,7 +57,7 @@ var board = new five.Board({
 board.on('ready', function() {
   var led = new five.Led('D7');
   var rudder = new five.Servo({
-    pin: 'A1',
+    pin: 'A4',
     range: [10, 170],
     startAt: 90
   });
@@ -84,7 +84,14 @@ board.on('ready', function() {
 
   function updateWindowGui() {
     w.erase();
-    var powerChar = enginePower ? 'x' : ' ';
+    var powerChar;
+    if (enginePower === 'on') {
+      powerChar = 'x';
+    } else if (enginePower === 'reverse') {
+      powerChar = '???';
+    } else {
+      powerChar = ' ';
+    }
     var THROTTLE_BASE_X = 10;
     var RUDDER_BASE_X = 30;
     w.insstr(0, THROTTLE_BASE_X - 'Throttle: '.length, 'Throttle: ');
@@ -109,17 +116,20 @@ board.on('ready', function() {
   }
 
   function updateEngine() {
-    if (enginePower) {
-      led.on();
+    if (enginePower === 'on') {
       motor.forward(255);
-    } else {
-      led.off()
+      led.on();
+    } else if (enginePower === 'off') {
       motor.stop();
+      led.off()
+    } else {
+      motor.reverse(255);
+      led.blink();
     }
   }
 
   function updateRudder() {
-    rudder.to(90 + rudderDirection); // rudderDirection between -80 and +80
+    rudder.to(100 + rudderDirection); // rudderDirection between -80 and +80
   }
 
   var w = new nc.Window();
@@ -135,14 +145,22 @@ board.on('ready', function() {
     } else if (charCode === CHAR_CODES.RIGHT_ARROW) {
       changedProperties = modifyRudderDirection(40);
     } else if (charCode === CHAR_CODES.Q || charCode === CHAR_CODES.UP_ARROW || charCode === CHAR_CODES.CAP_Q) {
-      if (!enginePower) {
-        enginePower = true;
+      if (enginePower !== 'on') {
         changedProperties = true;
+        if (enginePower === 'off') {
+          enginePower = 'on';
+        } else {
+          enginePower = 'off';
+        }
       }
     } else if (charCode === CHAR_CODES.A || charCode === CHAR_CODES.DOWN_ARROW || charCode === CHAR_CODES.CAP_A) {
-      if (enginePower) {
-        enginePower = false;
+      if (enginePower !== 'reverse') {
         changedProperties = true;
+        if (enginePower === 'off') {
+          enginePower = 'reverse';
+        } else {
+          enginePower = 'off';
+        }
       }
     }
 
