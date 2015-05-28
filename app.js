@@ -9,18 +9,9 @@ var board = new five.Board({
 
 board.on('ready', function() {
   var led = new five.Led('D7');
-  process.stdin.on('keypress', function(ch, key) {
-    if (key && key.name === 'l') {
-      console.log('lights');
+  this.repl.inject({
+    l: function() {
       led.toggle();
-    } else if (key && key.name === 'w') {
-      console.log('forward');
-    } else if (key && key.name === 's') {
-      console.log('back');
-    } else if (key && key.name === 'a') {
-      console.log('left');
-    } else if (key && key.name === 'd') {
-      console.log('right');
     }
   });
 });
