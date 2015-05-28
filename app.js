@@ -14,5 +14,7 @@ board.on('ready', function() {
       led.toggle();
     }
   });
-});
 
+  var rudder = new five.Servo('A1');
+
+});
