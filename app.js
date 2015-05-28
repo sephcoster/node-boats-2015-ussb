@@ -50,7 +50,8 @@ var board = new five.Board({
   io: new Spark({
     token: '7e7b3a08075e683ee3e6eacd8d7c003b83b80b98',
     deviceId: 'ussb'
-  })
+  }),
+  repl: false
 });
 
 board.on('ready', function() {
