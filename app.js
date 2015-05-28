@@ -110,8 +110,10 @@ board.on('ready', function() {
 
   function updateEngine() {
     if (enginePower) {
+      led.on();
       motor.forward(255);
     } else {
+      led.off()
       motor.stop();
     }
   }
