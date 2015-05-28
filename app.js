@@ -60,6 +60,8 @@ board.on('ready', function() {
     range: [10, 170],
     startAt: 90
   });
+  var motor = new five.Motor({pins: {pwm: 'A0', dir: 'D1', cdir: 'D0'}});
+
 
   rudder.center();
 
