@@ -12,13 +12,13 @@ var CHAR_CODES = {
   CAP_A: 65
 };
 var RUDDER_ART = {
-  '-80': [
+  '-60': [
     '|       |',
     '|<\\\\    |',
     '|    --\\|',
     '|       |'
   ],
-  '-40': [
+  '-30': [
     '| ^     |',
     '|  \\    |',
     '|   \\   |',
@@ -30,13 +30,13 @@ var RUDDER_ART = {
     '|   |   |',
     '|   |   |'
   ],
-  '40': [
+  '30': [
     '|     ^ |',
     '|    /  |',
     '|   /   |',
     '|  /    |'
   ],
-  '80': [
+  '60': [
     '|       |',
     '|   ///>|',
     '|/--    |',
@@ -117,13 +117,13 @@ board.on('ready', function() {
 
   function updateEngine() {
     if (enginePower === 'on') {
-      motor.forward(255);
+      motor.reverse(255);
       led.on();
     } else if (enginePower === 'off') {
       motor.stop();
       led.off()
     } else {
-      motor.reverse(255);
+      motor.forward(255);
       led.blink();
     }
   }
@@ -141,9 +141,9 @@ board.on('ready', function() {
   w.on('inputChar', function(char, charCode, isNonCharKey) {
     var changedProperties = false;
     if (charCode === CHAR_CODES.LEFT_ARROW) {
-      changedProperties = modifyRudderDirection(-40);
+      changedProperties = modifyRudderDirection(-30);
     } else if (charCode === CHAR_CODES.RIGHT_ARROW) {
-      changedProperties = modifyRudderDirection(40);
+      changedProperties = modifyRudderDirection(30);
     } else if (charCode === CHAR_CODES.Q || charCode === CHAR_CODES.UP_ARROW || charCode === CHAR_CODES.CAP_Q) {
       if (enginePower !== 'on') {
         changedProperties = true;
